@@ -335,11 +335,11 @@ class Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "M2 Speed:"))
         self.label_7.setText(_translate("MainWindow", "F2 Speed:"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Mode Selection"))
-        self.mode1.setText(_translate("MainWindow", "Mode 1"))
-        self.mode2.setText(_translate("MainWindow", "Mode 2"))
-        self.mode3.setText(_translate("MainWindow", "Mode 3"))
-        self.mode4.setText(_translate("MainWindow", "Mode 4"))
-        self.groupBox_4.setTitle(_translate("MainWindow", "Music selection"))
+        self.mode1.setText(_translate("MainWindow", "High"))
+        self.mode2.setText(_translate("MainWindow", "Mid"))
+        self.mode3.setText(_translate("MainWindow", "Default"))
+        self.mode4.setText(_translate("MainWindow", "LOW"))
+        self.groupBox_4.setTitle(_translate("MainWindow", "Music Selection"))
         self.label_3.setText(_translate("MainWindow", "Music Volume"))
         self.music1.setText(_translate("MainWindow", "Music 1"))
         self.music2.setText(_translate("MainWindow", "Music 2"))
@@ -376,10 +376,10 @@ class Ui_MainWindow(object):
         operations.f2=10
         operations.m1=10
         operations.m2=10
-        self.f1Speed.setProperty('value',9)
-        self.f2Speed.setProperty('value',9)
-        self.m1Speed.setProperty('value',9)
-        self.m2Speed.setProperty('value',9)
+        self.f1Speed.setValue(operations.f1)
+        self.f2Speed.setValue(operations.f2)
+        self.m1Speed.setValue(operations.m1)
+        self.m2Speed.setValue(operations.m2)
     def Mode2(self):
         operations.f1= 7
         operations.f2= 7
@@ -390,10 +390,10 @@ class Ui_MainWindow(object):
         self.m1Speed.setValue(operations.m1)
         self.m2Speed.setValue(operations.m2)
     def Mode3(self):
-        operations.f1 = 4
-        operations.f2 = 4
-        operations.m1 = 4
-        operations.m2 = 4
+        operations.f1 = 5
+        operations.f2 = 5
+        operations.m1 = 5
+        operations.m2 = 5
         self.f1Speed.setValue(operations.f1)
         self.f2Speed.setValue(operations.f2)
         self.m1Speed.setValue(operations.m1)
