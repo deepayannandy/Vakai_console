@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import operations
+import subprocess
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -17,7 +19,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.shutButton.setFont(font)
         self.shutButton.setObjectName("shutButton")
-        self.shutButton.clicked.connect(Shutdown)
+        self.shutButton.clicked.connect(self.Shutdown)
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(10, 20, 991, 81))
         font = QtGui.QFont()
@@ -33,7 +35,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.stopButton.setFont(font)
         self.stopButton.setObjectName("stopButton")
-        self.stopButton.clicked.connect(Stop)
+        self.stopButton.clicked.connect(self.Stop)
         self.pauseButton = QtWidgets.QPushButton(self.groupBox)
         self.pauseButton.setGeometry(QtCore.QRect(560, 20, 161, 51))
         font = QtGui.QFont()
@@ -41,7 +43,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.pauseButton.setFont(font)
         self.pauseButton.setObjectName("pauseButton")
-        self.pauseButton.clicked.connect(Pause)
+        self.pauseButton.clicked.connect(self.Pause)
         self.resumeButton = QtWidgets.QPushButton(self.groupBox)
         self.resumeButton.setGeometry(QtCore.QRect(800, 20, 161, 51))
         font = QtGui.QFont()
@@ -49,7 +51,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.resumeButton.setFont(font)
         self.resumeButton.setObjectName("resumeButton")
-        self.resumeButton.clicked.connect(Resume)
+        self.resumeButton.clicked.connect(self.Resume)
         self.startButton = QtWidgets.QPushButton(self.groupBox)
         self.startButton.setGeometry(QtCore.QRect(30, 20, 161, 51))
         font = QtGui.QFont()
@@ -57,7 +59,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.startButton.setFont(font)
         self.startButton.setObjectName("startButton")
-        self.startButton.clicked.connect(Start)
+        self.startButton.clicked.connect(self.Start)
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 120, 201, 51))
         font = QtGui.QFont()
@@ -77,7 +79,7 @@ class Ui_MainWindow(object):
         self.spinTime.setMaximum(120)
         self.spinTime.setProperty("value", 60)
         self.spinTime.setObjectName("spinTime")
-        self.spinTime.valueChanged.connect(timerset)
+        self.spinTime.valueChanged.connect(self.timerset)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(390, 150, 141, 31))
         font = QtGui.QFont()
@@ -147,7 +149,7 @@ class Ui_MainWindow(object):
         self.f1Speed.setMaximum(10)
         self.f1Speed.setProperty("value", operations.f1)
         self.f1Speed.setObjectName("f1Speed")
-        self.f1Speed.valueChanged.connect(F1speed)
+        self.f1Speed.valueChanged.connect(self.F1speed)
         self.m1Speed = QtWidgets.QSpinBox(self.groupBox_2)
         self.m1Speed.setGeometry(QtCore.QRect(170, 70, 151, 51))
         font = QtGui.QFont()
@@ -158,7 +160,7 @@ class Ui_MainWindow(object):
         self.m1Speed.setMaximum(10)
         self.m1Speed.setProperty("value", operations.m1)
         self.m1Speed.setObjectName("m1Speed")
-        self.m1Speed.valueChanged.connect(M1speed)
+        self.m1Speed.valueChanged.connect(self.M1speed)
         self.m2Speed = QtWidgets.QSpinBox(self.groupBox_2)
         self.m2Speed.setGeometry(QtCore.QRect(170, 130, 151, 51))
         font = QtGui.QFont()
@@ -169,7 +171,7 @@ class Ui_MainWindow(object):
         self.m2Speed.setMaximum(10)
         self.m2Speed.setProperty("value", operations.m2)
         self.m2Speed.setObjectName("m2Speed")
-        self.m2Speed.valueChanged.connect(M2speed)
+        self.m2Speed.valueChanged.connect(self.M2speed)
         self.f2Speed = QtWidgets.QSpinBox(self.groupBox_2)
         self.f2Speed.setGeometry(QtCore.QRect(170, 190, 151, 51))
         font = QtGui.QFont()
@@ -180,7 +182,7 @@ class Ui_MainWindow(object):
         self.f2Speed.setMaximum(10)
         self.f2Speed.setProperty("value", operations.f2)
         self.f2Speed.setObjectName("f2Speed")
-        self.f2Speed.valueChanged.connect(F2speed)
+        self.f2Speed.valueChanged.connect(self.F2speed)
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_3.setGeometry(QtCore.QRect(420, 230, 231, 251))
         font = QtGui.QFont()
@@ -195,7 +197,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.mode1.setFont(font)
         self.mode1.setObjectName("mode1")
-        self.mode1.clicked.connect(Mode1)
+        self.mode1.clicked.connect(self.Mode1)
         self.mode2 = QtWidgets.QPushButton(self.groupBox_3)
         self.mode2.setGeometry(QtCore.QRect(20, 70, 181, 41))
         font = QtGui.QFont()
@@ -203,7 +205,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.mode2.setFont(font)
         self.mode2.setObjectName("mode2")
-        self.mode2.clicked.connect(Mode2)
+        self.mode2.clicked.connect(self.Mode2)
         self.mode3 = QtWidgets.QPushButton(self.groupBox_3)
         self.mode3.setGeometry(QtCore.QRect(20, 130, 181, 41))
         font = QtGui.QFont()
@@ -211,7 +213,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.mode3.setFont(font)
         self.mode3.setObjectName("mode3")
-        self.mode3.clicked.connect(Mode3)
+        self.mode3.clicked.connect(self.Mode3)
         self.mode4 = QtWidgets.QPushButton(self.groupBox_3)
         self.mode4.setGeometry(QtCore.QRect(20, 190, 181, 41))
         font = QtGui.QFont()
@@ -219,7 +221,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.mode4.setFont(font)
         self.mode4.setObjectName("mode4")
-        self.mode4.clicked.connect(Mode4)
+        self.mode4.clicked.connect(self.Mode4)
         self.groupBox_4 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_4.setGeometry(QtCore.QRect(670, 230, 331, 251))
         font = QtGui.QFont()
@@ -236,7 +238,7 @@ class Ui_MainWindow(object):
         self.musicVolume.setTickPosition(QtWidgets.QSlider.TicksBothSides)
         self.musicVolume.setTickInterval(5)
         self.musicVolume.setObjectName("musicVolume")
-        self.musicVolume.valueChanged.connect(volumec)
+        self.musicVolume.valueChanged.connect(self.volumec)
         self.label_3 = QtWidgets.QLabel(self.groupBox_4)
         self.label_3.setGeometry(QtCore.QRect(10, 120, 141, 41))
         font = QtGui.QFont()
@@ -252,7 +254,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.music1.setFont(font)
         self.music1.setObjectName("music1")
-        self.music1.clicked.connect(music1)
+        self.music1.clicked.connect(self.Music1)
         self.music2 = QtWidgets.QRadioButton(self.groupBox_4)
         self.music2.setGeometry(QtCore.QRect(20, 70, 131, 41))
         font = QtGui.QFont()
@@ -260,7 +262,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.music2.setFont(font)
         self.music2.setObjectName("music2")
-        self.music2.clicked.connect(music2)
+        self.music2.clicked.connect(self.Music2)
         self.music3 = QtWidgets.QRadioButton(self.groupBox_4)
         self.music3.setGeometry(QtCore.QRect(180, 20, 141, 41))
         font = QtGui.QFont()
@@ -268,7 +270,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.music3.setFont(font)
         self.music3.setObjectName("music3")
-        self.music3.clicked.connect(music3)
+        self.music3.clicked.connect(self.Music3)
         self.music4 = QtWidgets.QRadioButton(self.groupBox_4)
         self.music4.setGeometry(QtCore.QRect(180, 70, 121, 41))
         font = QtGui.QFont()
@@ -276,7 +278,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.music4.setFont(font)
         self.music4.setObjectName("music4")
-        self.music4.clicked.connect(music4)
+        self.music4.clicked.connect(self.Music4)
         self.groupBox_5 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_5.setGeometry(QtCore.QRect(30, 480, 241, 61))
         font = QtGui.QFont()
@@ -349,92 +351,93 @@ class Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Time Left:"))
 
 ###################################### User define functions ###########################################
-def Start():
-    print("Start pressed!")
-    operations.started=1
-    operations.play_music()
-    operations.serial_update()
-def Stop():
-    print("Stop pressed!")
-    operations.started = 0
-    operations.stop_music()
-    operations.serial_stop()
-def Resume():
-    print("Resume pressed!")
-    operations.started = 1
-    operations.music_unpause()
-    operations.serial_update()
-def Pause():
-    print("Pause pressed!")
-    operations.started = 0
-    operations.music_pause()
-    operations.serial_stop()
-def Mode1(self):
-    operations.f1=10
-    operations.f2=10
-    operations.m1=10
-    operations.m2=10
-    self.f1Speed.setProperty('value',9)
-    self.f2Speed.setProperty('value',9)
-    self.m1Speed.setProperty('value',9)
-    self.m2Speed.setProperty('value',9)
-def Mode2(self):
-    operations.f1= 7
-    operations.f2= 7
-    operations.m1= 7
-    operations.m2= 7
-    self.f1Speed.setValue(operations.f1)
-    self.f2Speed.setValue(operations.f2)
-    self.m1Speed.setValue(operations.m1)
-    self.m2Speed.setValue(operations.m2)
-def Mode3(self):
-    operations.f1 = 4
-    operations.f2 = 4
-    operations.m1 = 4
-    operations.m2 = 4
-    self.f1Speed.setValue(operations.f1)
-    self.f2Speed.setValue(operations.f2)
-    self.m1Speed.setValue(operations.m1)
-    self.m2Speed.setValue(operations.m2)
-def Mode4(self):
-    operations.f1 = 1
-    operations.f2 = 1
-    operations.m1 = 1
-    operations.m2 = 1
-    self.f1Speed.setValue(operations.f1)
-    self.f2Speed.setValue(operations.f2)
-    self.m1Speed.setValue(operations.m1)
-    self.m2Speed.setValue(operations.m2)
-def volumec(x):
-    operations.changevol(x/100)
-def Shutdown():
-    print("Shutdown initiated!")
-def timerset(min):
-    print(min)
-def F1speed(speed):
-    operations.f1=speed
-    if operations.started==1:
+    def Start(self):
+        print("Start pressed!")
+        operations.started=1
+        operations.play_music()
         operations.serial_update()
-def F2speed(speed):
-    operations.f2=speed
-    if operations.started == 1:
+    def Stop(self):
+        print("Stop pressed!")
+        operations.started = 0
+        operations.stop_music()
+        operations.serial_stop()
+    def Resume(self):
+        print("Resume pressed!")
+        operations.started = 1
+        operations.music_unpause()
         operations.serial_update()
-def M1speed(speed):
-    operations.m1=speed
-    if operations.started == 1:
-        operations.serial_update()
-def M2speed(speed):
-    operations.m2=speed
-    if operations.started == 1:
-        operations.serial_update()
-def music1():
-    operations.songname='m1'
-def music2():
-    operations.songname = 'm2'
-def music3():
-    operations.songname = 'm3'
-def music4():
-    operations.songname = 'm4'
+    def Pause(self):
+        print("Pause pressed!")
+        operations.started = 0
+        operations.music_pause()
+        operations.serial_stop()
+    def Mode1(self):
+        operations.f1=10
+        operations.f2=10
+        operations.m1=10
+        operations.m2=10
+        self.f1Speed.setProperty('value',9)
+        self.f2Speed.setProperty('value',9)
+        self.m1Speed.setProperty('value',9)
+        self.m2Speed.setProperty('value',9)
+    def Mode2(self):
+        operations.f1= 7
+        operations.f2= 7
+        operations.m1= 7
+        operations.m2= 7
+        self.f1Speed.setValue(operations.f1)
+        self.f2Speed.setValue(operations.f2)
+        self.m1Speed.setValue(operations.m1)
+        self.m2Speed.setValue(operations.m2)
+    def Mode3(self):
+        operations.f1 = 4
+        operations.f2 = 4
+        operations.m1 = 4
+        operations.m2 = 4
+        self.f1Speed.setValue(operations.f1)
+        self.f2Speed.setValue(operations.f2)
+        self.m1Speed.setValue(operations.m1)
+        self.m2Speed.setValue(operations.m2)
+    def Mode4(self):
+        operations.f1 = 1
+        operations.f2 = 1
+        operations.m1 = 1
+        operations.m2 = 1
+        self.f1Speed.setValue(operations.f1)
+        self.f2Speed.setValue(operations.f2)
+        self.m1Speed.setValue(operations.m1)
+        self.m2Speed.setValue(operations.m2)
+    def volumec(self,x):
+        operations.changevol(x/100)
+    def Shutdown(self):
+        print("Shutdown initiated!")
+        subprocess.call(["shutdown", "-h", "now"])
+    def timerset(self,min):
+        print(min)
+    def F1speed(self,speed):
+        operations.f1=speed
+        if operations.started==1:
+            operations.serial_update()
+    def F2speed(self,speed):
+        operations.f2=speed
+        if operations.started == 1:
+            operations.serial_update()
+    def M1speed(self,speed):
+        operations.m1=speed
+        if operations.started == 1:
+            operations.serial_update()
+    def M2speed(self,speed):
+        operations.m2=speed
+        if operations.started == 1:
+            operations.serial_update()
+    def Music1(self):
+        operations.songname='m1'
+    def Music2(self):
+        operations.songname = 'm2'
+    def Music3(self):
+        operations.songname = 'm3'
+    def Music4(self):
+        operations.songname = 'm4'
 
 if __name__ == "__main__":
     import sys
