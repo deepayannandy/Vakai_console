@@ -33,3 +33,8 @@ def serial_update():
     print('speed update to:',f1,f2,m1,m2)
 def serial_stop():
     print("serial_stop")
+
+#######################################  runtime related functions #######################################
+def totalrun_time():
+    x=10
+    return x

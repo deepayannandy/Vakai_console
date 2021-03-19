@@ -1,9 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import operations
 import subprocess
+import datetime
+import threading
 
 
 class Ui_MainWindow(object):
+    sptime=60
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1024, 575)
@@ -328,7 +331,7 @@ class Ui_MainWindow(object):
         self.startButton.setText(_translate("MainWindow", "START"))
         self.label.setText(_translate("MainWindow", "Session Time:"))
         self.label_2.setText(_translate("MainWindow", "mins"))
-        self.timerLabel.setText(_translate("MainWindow", "60"))
+        self.timerLabel.setText(_translate("MainWindow", "00"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Settings"))
         self.label_4.setText(_translate("MainWindow", "F1 Speed:"))
         self.label_5.setText(_translate("MainWindow", "M1 Speed:"))
@@ -353,11 +356,15 @@ class Ui_MainWindow(object):
 ###################################### User define functions ###########################################
     def Start(self):
         print("Start pressed!")
+        self.timerLabel.setText(str(sptime))
+        clock = threading.Thread(target=self.runtimer,args=[sptime])
+        clock.start()
         operations.started=1
         operations.play_music()
         operations.serial_update()
     def Stop(self):
         print("Stop pressed!")
+        self.timerLabel.setText(str(00))
         operations.started = 0
         operations.stop_music()
         operations.serial_stop()
@@ -372,37 +379,25 @@ class Ui_MainWindow(object):
         operations.music_pause()
         operations.serial_stop()
     def Mode1(self):
-        operations.f1=10
-        operations.f2=10
-        operations.m1=10
-        operations.m2=10
+        operations.f1=operations.f2=operations.m1=operations.m2=10
         self.f1Speed.setValue(operations.f1)
         self.f2Speed.setValue(operations.f2)
         self.m1Speed.setValue(operations.m1)
         self.m2Speed.setValue(operations.m2)
     def Mode2(self):
-        operations.f1= 7
-        operations.f2= 7
-        operations.m1= 7
-        operations.m2= 7
+        operations.f1=operations.f2=operations.m1=operations.m2=7
         self.f1Speed.setValue(operations.f1)
         self.f2Speed.setValue(operations.f2)
         self.m1Speed.setValue(operations.m1)
         self.m2Speed.setValue(operations.m2)
     def Mode3(self):
-        operations.f1 = 5
-        operations.f2 = 5
-        operations.m1 = 5
-        operations.m2 = 5
+        operations.f1=operations.f2=operations.m1=operations.m2=5
         self.f1Speed.setValue(operations.f1)
         self.f2Speed.setValue(operations.f2)
         self.m1Speed.setValue(operations.m1)
         self.m2Speed.setValue(operations.m2)
     def Mode4(self):
-        operations.f1 = 1
-        operations.f2 = 1
-        operations.m1 = 1
-        operations.m2 = 1
+        operations.f1=operations.f2=operations.m1=operations.m2=2
         self.f1Speed.setValue(operations.f1)
         self.f2Speed.setValue(operations.f2)
         self.m1Speed.setValue(operations.m1)
@@ -413,6 +408,8 @@ class Ui_MainWindow(object):
         print("Shutdown initiated!")
         subprocess.call(["shutdown", "-h", "now"])
     def timerset(self,min):
+        global sptime
+        sptime=int(min)
         print(min)
     def F1speed(self,speed):
         operations.f1=speed
@@ -438,6 +435,33 @@ class Ui_MainWindow(object):
         operations.songname = 'm3'
     def Music4(self):
         operations.songname = 'm4'
+    def total_Time(self):
+        self.label_8.setText(operations.totalrun_time())
+
+    def runtimer(self, run_min):
+        now = datetime.datetime.now()
+        start_time = now.strftime("%H:%M")
+        future = now + datetime.timedelta(minutes=run_min)
+        stop_time = future.strftime("%H:%M")
+        print("Timer will stop at:", stop_time)
+        FMT = '%H:%M'
+        tdelta = datetime.datetime.strptime(stop_time, FMT) - datetime.datetime.strptime(start_time, FMT)
+        str_tdata = str(tdelta).split(':')
+        min = (int(str_tdata[0]) * 60) + int(str_tdata[1])
+        lasttime = min
+        while lasttime != 0:
+            now = datetime.datetime.now()
+            start_time = now.strftime("%H:%M")
+            tdelta = datetime.datetime.strptime(stop_time, FMT) - datetime.datetime.strptime(start_time, FMT)
+            str_tdata = str(tdelta).split(':')
+            min = (int(str_tdata[0]) * 60) + int(str_tdata[1])
+            if min == lasttime:
+                pass
+            else:
+                print("left time: ", min)
+                self.timerLabel.setText(str(min))
+                lasttime = min
+        self.Stop()
 
 if __name__ == "__main__":
     import sys
