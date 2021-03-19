@@ -6,7 +6,9 @@ import threading
 
 
 class Ui_MainWindow(object):
-    sptime=60
+    def __init__(self):
+        self.sptime=60
+        self.exit_event=threading.Event()
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1024, 575)
@@ -349,34 +351,41 @@ class Ui_MainWindow(object):
         self.music3.setText(_translate("MainWindow", "Music 3"))
         self.music4.setText(_translate("MainWindow", "Music 4"))
         self.groupBox_5.setTitle(_translate("MainWindow", "Total Run Time"))
-        self.label_8.setText(_translate("MainWindow", "00"))
+        self.label_8.setText(str(operations.get_totalrun_time()))
         self.label_10.setText(_translate("MainWindow", "mins"))
         self.label_11.setText(_translate("MainWindow", "Time Left:"))
 
 ###################################### User define functions ###########################################
     def Start(self):
         print("Start pressed!")
-        self.timerLabel.setText(str(sptime))
-        clock = threading.Thread(target=self.runtimer,args=[sptime])
+        self.timerLabel.setText(str(self.sptime))
+        self.exit_event.clear()
+        clock = threading.Thread(target=self.runtimer,args=[self.sptime])
         clock.start()
         operations.started=1
         operations.play_music()
         operations.serial_update()
     def Stop(self):
         print("Stop pressed!")
-        self.timerLabel.setText(str(00))
+        self.exit_event.set()
         operations.started = 0
         operations.stop_music()
+        runtime=int(self.sptime)-int(self.timerLabel.text())
+        operations.set_totalrun_time(runtime)
         operations.serial_stop()
     def Resume(self):
         print("Resume pressed!")
+        self.exit_event.clear()
+        clock = threading.Thread(target=self.runtimer, args=[int(self.timerLabel.text())])
+        clock.start()
         operations.started = 1
-        operations.music_unpause()
+        operations.play_music()
         operations.serial_update()
     def Pause(self):
         print("Pause pressed!")
+        self.exit_event.set()
         operations.started = 0
-        operations.music_pause()
+        operations.stop_music()
         operations.serial_stop()
     def Mode1(self):
         operations.f1=operations.f2=operations.m1=operations.m2=10
@@ -408,8 +417,7 @@ class Ui_MainWindow(object):
         print("Shutdown initiated!")
         subprocess.call(["shutdown", "-h", "now"])
     def timerset(self,min):
-        global sptime
-        sptime=int(min)
+        self.sptime=int(min)
         print(min)
     def F1speed(self,speed):
         operations.f1=speed
@@ -443,7 +451,7 @@ class Ui_MainWindow(object):
         start_time = now.strftime("%H:%M")
         future = now + datetime.timedelta(minutes=run_min)
         stop_time = future.strftime("%H:%M")
-        print("Timer will stop at:", stop_time)
+        print("Session will stop at:", stop_time)
         FMT = '%H:%M'
         tdelta = datetime.datetime.strptime(stop_time, FMT) - datetime.datetime.strptime(start_time, FMT)
         str_tdata = str(tdelta).split(':')
@@ -458,11 +466,13 @@ class Ui_MainWindow(object):
             if min == lasttime:
                 pass
             else:
-                print("left time: ", min)
+                #print("left time: ", min)
                 self.timerLabel.setText(str(min))
                 lasttime = min
-        self.Stop()
-
+            if self.exit_event.isSet():
+                break
+        else:
+            self.Stop()
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

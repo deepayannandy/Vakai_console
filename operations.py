@@ -17,10 +17,6 @@ def play_music():
         pygame.mixer.music.play(loops=-1)
 def stop_music():
     pygame.mixer.music.stop()
-def music_pause():
-    pygame.mixer.music.pause()
-def music_unpause():
-    pygame.mixer.music.unpause()
 def changevol(x):
     pygame.mixer.music.set_volume(x)
 
@@ -35,6 +31,23 @@ def serial_stop():
     print("serial_stop")
 
 #######################################  runtime related functions #######################################
-def totalrun_time():
-    x=10
-    return x
+def get_totalrun_time():
+    log_file=open("runtime.log",'r+')
+    time=log_file.read()
+    if len(time)==0:
+        log_file.write('0')
+        log_file.close()
+        return 0
+    else:
+        log_file.close()
+        return str(round(int(time)/60,2))
+
+def set_totalrun_time(x):
+    log_file = open("runtime.log", 'r')
+    oldtime=log_file.read()
+    print(oldtime,type(oldtime))
+    log_file.close()
+    log_file = open("runtime.log", 'w')
+    log_file.write(str(x))
+    log_file.close()
+    print("runtime updated")
